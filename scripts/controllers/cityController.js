@@ -9,6 +9,7 @@
     //then update all the other controllers
     $('#city-link').parent().hide();
     $('.hero').text('City Comparisons').animate({fontSize: '3em'}, 800);
+    cityView.handleCityInfo(cityObj);
   };
 
   module.cityController = cityController;

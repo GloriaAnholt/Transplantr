@@ -22,6 +22,7 @@
   $('#county-filter').on('change', function(){
     Census.countyChoice = $(this).val();
     console.log(Census.countyChoice);
+    Census.getCountyInfo();
   });
 
   //method to find info for county
@@ -29,9 +30,10 @@
     for (var i = 0; i < Census.allData.length; i++) {
       if (Census.allData[i][0] === Census.countyChoice) {
         return Census.allData[i];
-        console.log(Census.allData[i]);
+        var selectedCounty = Census.allData[i];
       }
-    };
+    }
+    cityController.reveal(selectedCounty);
   };
 
   Census.prototype.createCityHtml = function() {

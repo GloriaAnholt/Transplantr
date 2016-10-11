@@ -2,6 +2,7 @@
   var cityController = {};
 
   cityController.reveal = function(cityObj) {
+    cityView.handleCityInfo(cityObj);
     $('div').not('.hero, .icon-menu').hide();
     $('.city-comparison-page').show();
     $('li').show();
@@ -9,7 +10,6 @@
     //then update all the other controllers
     $('#city-link').parent().hide();
     $('.hero').text('City Comparisons').animate({fontSize: '3em'}, 800);
-    cityView.handleCityInfo(cityObj);
   };
 
   module.cityController = cityController;

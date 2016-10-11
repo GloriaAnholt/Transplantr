@@ -22,7 +22,8 @@
   $('#county-filter').on('change', function(){
     Census.countyChoice = $(this).val();
     console.log(Census.countyChoice);
-    Census.getCountyInfo();
+    //county data is there; it's just not showing on the page or rendering in handlebars template
+    console.log(Census.getCountyInfo());
   });
 
   //method to find info for county
@@ -30,10 +31,13 @@
     for (var i = 0; i < Census.allData.length; i++) {
       if (Census.allData[i][0] === Census.countyChoice) {
         return Census.allData[i];
+        //storing the selected County into a variable
         var selectedCounty = Census.allData[i];
+        //handing the selectedCounty to the cityController.
+        //THIS MAY BE WHERE THE PROBLEM LIES
+        cityController.reveal(selectedCounty);
       }
     }
-    cityController.reveal(selectedCounty);
   };
 
   Census.prototype.createCityHtml = function() {

@@ -1,8 +1,9 @@
+'use strict';
 //IIFE here
 (function(module) {
   // contructor function to make object out of API response data
   function Census (data) {
-    for (key in data) {
+    for (var key in data) {
       this[key] = data[key];
     }
   }
@@ -22,19 +23,27 @@
     Census.countyChoice = $(this).val();
     console.log(Census.countyChoice);
   });
+
   //method to find info for county
   Census.getCountyInfo = function () {
-    for (var i=0; i < Census.allData.length; i++) {
+    for (var i = 0; i < Census.allData.length; i++) {
       if (Census.allData[i][0] === Census.countyChoice) {
         return Census.allData[i];
+        console.log(Census.allData[i]);
       }
     };
   };
+
+  Census.prototype.createCityHtml = function() {
+    var template = Handlebars.compile($('#city-info-template').html());
+    return template(this);
+  };
+
   //ajax call here
   Census.request = function(callback) {
     $.ajax({
       method: 'GET',
-      url: 'http://api.census.gov/data/timeseries/poverty/saipe?get=NAME,SAEMHI_PT,SAEPOVRTALL_PT&for=county:*&in=state:' + Census.stateChoice + '&time=2012&key=7a3aa9d2f7fafb092b5957d10b65c477719c4c4f',
+      url: 'http://api.census.gov/data/timeseries/poverty/saipe?get=NAME,SAEMHI_PT,SAEPOVRTALL_PT&for=county:*&in=state:' + Census.stateChoice + '&time=2012&key=' + censusKey,
       success: function(data, status, xhr){
         Census.loadData(data);
         data.forEach(function(county){

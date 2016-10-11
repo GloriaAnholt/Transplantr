@@ -35,7 +35,6 @@ RentalData.fetchStates = function() {
 
       // grab the state name of the selected state
       selectedState = $('option[value="'+ Census.stateChoice +'"]').text();
-
       // grab only the RentalData obj you need:
       for (var i=0; i < RentalData.stateData.length; i++) {
         if (RentalData.stateData[i]["State"] == selectedState) {

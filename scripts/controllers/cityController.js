@@ -1,7 +1,7 @@
 (function(module) {
   var cityController = {};
 
-  cityController.reveal = function() {
+  cityController.reveal = function(cityObj) {
     $('div').not('.hero, .icon-menu').hide();
     $('.city-comparison-page').show();
     $('li').show();

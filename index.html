@@ -16,7 +16,9 @@
     <script id="state-rental-template" type="text/x-handlebars-template">
       <p>For the state of {{State}}, the average rental price of a two-bedroom apartment is {{Avg}}.</p>
     </script>
-
+    <script id="city-info-template" type="text/x-handlebars-template">
+      <p>The average salary in {{0}} is {{1}}, while {{2}} live in poverty.</p>
+    </script>
   </head>
   <body>
     <header>
@@ -111,6 +113,9 @@
             <input type="submit" value="Go" id="zipCodeSubmit">
           </form>
             <div id="state-rentals">
+
+            </div>
+            <div id="city-info">
 
             </div>
         </div>

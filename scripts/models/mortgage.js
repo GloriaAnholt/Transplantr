@@ -140,20 +140,20 @@ To use handlebars, the data needs to be stored as an array of objects.
 
     // This is where the zindex is, if it doesn't return a number, change the message
     if (isNaN(citiesNodes.childNodes[x].childNodes[2].innerHTML)) {
-      var houseprice = "not available for " + cityChoice + "."
+      var houseprice = 'not available for ' + cityChoice + '.';
     } else {
-      houseprice = "$" + citiesNodes.childNodes[x].childNodes[2].innerHTML;
+      houseprice = '$' + citiesNodes.childNodes[x].childNodes[2].innerHTML;
     }
 
     if (isCurrent) {
       MortgageData.currentHousePrices = (new MortgageData({
-        "city": MortgageData.currentCityChoice,
-        "aveHousePrice": houseprice
+        'city': MortgageData.currentCityChoice,
+        'aveHousePrice': houseprice
       }));
     } else {
       MortgageData.destinationHousePrices = (new MortgageData({
-        "city": MortgageData.destinationCityChoice,
-        "aveHousePrice": houseprice
+        'city': MortgageData.destinationCityChoice,
+        'aveHousePrice': houseprice
       }));
     }
 

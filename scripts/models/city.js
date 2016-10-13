@@ -57,14 +57,22 @@
   //compute income ration when submit button is pressed
   $('#current-submit').on('click', function() {
     Census.currentIncome = $('#current-income').val();
+    var myIncParts = Census.currentIncome.match(/\d/g);
+    var myIncome = parseInt(myIncParts.join(''));
+    console.log('My income:', myIncome);
     localStorage.setItem('income', Census.currentIncome);
-    for (var i = 0; i < Census.economicData.length; i++) {
-      if (Census.economicData[i].county === Census.countyChoice) {
-        Census.curIncRatio = (Census.currentIncome)/(parseInt(Census.economicData[i].medianIncome.replace('$', '')));
-        console.log(parseInt(Census.economicData[i].medianIncome.replace('$', '')));
-        console.log(Census.curIncRatio);
-      }
-    } // income called here so it waits for the input to load
+    var medIncParts = localStorage.getItem('homeincome').match(/\d/g);
+    var localMedianIncome = parseInt(medIncParts.join(''));
+    Census.curIncRatio = (myIncome)/(localMedianIncome);
+    console.log('Local Median Income:', localMedianIncome);
+    console.log('Ratio to Median:', Census.curIncRatio);
+    var desMedIncParts = localStorage.getItem('awayincome').match(/\d/g);
+    var desMedianIncome = parseInt(desMedIncParts.join(''));
+    Census.incNeeded = Math.round((desMedianIncome)*(Census.curIncRatio));
+    console.log(Census.incNeeded);
+    $('#income_needed_median').html('You would need to make <b>$' + Census.incNeeded + '</b> in order to maintain the same relationship to the median income.');
+
+    // income called here so it waits for the input to load
     dataController.incomeReveal(Census.currentIncome);
     $('.showChartContainer').css('display', 'block');
   });

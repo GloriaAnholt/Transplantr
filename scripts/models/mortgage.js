@@ -27,13 +27,12 @@ To use handlebars, the data needs to be stored as an array of objects.
   };
 
 
-  MortgageData.fetchZillow = function() {
+  MortgageData.fetchZillow = function(isCurrent) {
     // The call to /zillow is routed by page to the node server and out to Zillow
-    var currentState = Census.source ? Census.stateChoiceName : Census.destinationStateChoiceName;
-    var currentCounty = Census.source ? Census.countyChoiceName : Census.destinationCountyChoiceName;
-    var isCurrent = Census.source;
+    var currentState = isCurrent ? Census.stateChoiceName : Census.destinationStateChoiceName;
+    var currentCounty = isCurrent ? Census.countyChoiceName : Census.destinationCountyChoiceName;
 
-    console.log('in fetchZillow, state county', currentState, currentCounty);
+    console.log('in fetchZillow, current state county', isCurrent, currentState, currentCounty);
 
     $.ajax({
       method: 'GET',
@@ -98,11 +97,13 @@ To use handlebars, the data needs to be stored as an array of objects.
   $('#city-choice').on('change', function(){
     MortgageData.currentCityChoice = $(this).val();
     MortgageData.source = true;
-    var isCurrent = MortgageData.source;
-    MortgageData.findHomes();
-    MortgageData.fetchZillow();
+    var isCurrent = true;
+
+    console.log('on change, city county current are', isCurrent, Census.countyChoiceName, MortgageData.currentCityChoice);
+
+    MortgageData.fetchZillow(isCurrent);
+    MortgageData.findHomes(isCurrent);
     // this change needs to update the zillow template on the page
-    console.log('on change, city county are', MortgageData.currentCityChoice, Census.countyChoiceName);
     dataController.mortgageReveal(MortgageData.currentHousePrices, isCurrent);
     // Call the rental stuff now that city is populated
     RentalData.fetchStates();
@@ -113,9 +114,12 @@ To use handlebars, the data needs to be stored as an array of objects.
   $('#destination-city-choice').on('change', function(){
     MortgageData.destinationCityChoice = $(this).val();
     MortgageData.source = false;
-    var isCurrent = MortgageData.source;
-    MortgageData.fetchZillow();
-    MortgageData.findHomes();
+    var isCurrent = false;
+
+    console.log('on change, destination current county city  are', isCurrent, Census.destinationCountyChoiceName, MortgageData.destinationCityChoice);
+
+    MortgageData.fetchZillow(isCurrent);
+    MortgageData.findHomes(isCurrent);
     dataController.mortgageReveal(MortgageData.destinationHousePrices, isCurrent);
     // Call the rental stuff now that city is populated
     RentalData.fetchStates();
@@ -123,11 +127,16 @@ To use handlebars, the data needs to be stored as an array of objects.
   });
 
 
-  MortgageData.findHomes = function(dummy){
-    var cityChoice = Census.source ? MortgageData.currentCityChoice : MortgageData.destinationCityChoice;
-    var cityNames = Census.source ? MortgageData.currentCityNames : MortgageData.destinationCityNames;
-    var citiesNodes = Census.source ? MortgageData.currentCitiesNodes : MortgageData.destinationCitiesNodes;
-    var x = cityNames.indexOf(cityChoice) + 1;
+  MortgageData.findHomes = function(isCurrent){
+    var citiesNodes = isCurrent ? MortgageData.currentCitiesNodes : MortgageData.destinationCitiesNodes;
+
+    if (isCurrent) {
+      var x = MortgageData.currentCityNames.indexOf(MortgageData.currentCityChoice) + 1;
+    } else {
+      x = MortgageData.destinationCityNames.indexOf(MortgageData.destinationCityChoice) + 1;
+    }
+
+    console.log('in findHomes, city choice citiesNodes and x are ', cityChoice, citiesNodes, x);
 
     // This is where the zindex is, if it doesn't return a number, change the message
     if (isNaN(citiesNodes.childNodes[x].childNodes[2].innerHTML)) {
@@ -136,7 +145,7 @@ To use handlebars, the data needs to be stored as an array of objects.
       houseprice = "$" + citiesNodes.childNodes[x].childNodes[2].innerHTML;
     }
 
-    if (Census.source) {
+    if (isCurrent) {
       MortgageData.currentHousePrices = (new MortgageData({
         "city": MortgageData.currentCityChoice,
         "aveHousePrice": houseprice
@@ -148,7 +157,7 @@ To use handlebars, the data needs to be stored as an array of objects.
       }));
     }
 
-    if (Census.source) {
+    if (isCurrent) {
       Data.home = new Data.location(Census.stateChoiceName, Census.countyChoiceName, MortgageData.currentCityChoice, houseprice, Data.econIncome, Data.econPoverty);
       Data.storeData(Data.home);
     } else {

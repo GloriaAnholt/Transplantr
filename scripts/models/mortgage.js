@@ -91,7 +91,7 @@ To use handlebars, the data needs to be stored as an array of objects.
           $('#destination-city-choice').append(filterEntry);
         }
       });
-    }, 300);
+    }, 600);
   };
 
 //assigns the user's city choice to the variable MortgageData.cityChoice.

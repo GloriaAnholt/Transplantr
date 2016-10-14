@@ -8,7 +8,14 @@ function drawChart() {
     var awayhome = localStorage.getItem('awayhomePrice');
     var ctx = $('#chart_canvas');
     $('#housing-graph-description').empty().html('This graph shows the average home prices(in US dollars) in '+homecity+' and '+awaycity+', as well as the national average home price.');
-    $('#income-graph-description').empty().html('This graph shows the average incomes (in US dollars) in '+homecity+' and '+awaycity+', as well as the national median income.');
+    if (homehome.charAt(0) !== '$'){
+      $('#housing-graph-description').append('<br><br>Zillow does not have any house price information for ', homecity,'.');
+    }
+    if (awayhome.charAt(0) !== '$'){
+      $('#housing-graph-description').append('<br><br>Zillow does not have any house price information for ',awaycity,'.');
+    }
+
+
     new Chart(ctx, {
       type: 'bar',
       data: {
@@ -54,8 +61,14 @@ function drawChart2() {
   setTimeout(function() {
     var homecity = localStorage.getItem('homecity');
     var awaycity = localStorage.getItem('awaycity');
-    var modifiedIncome = localStorage.getItem('income').match(/\d/g);
-    var myIncome = parseInt(modifiedIncome.join(''));
+    if (localStorage.getItem('income')){
+      var modifiedIncome = localStorage.getItem('income').match(/\d/g);
+      var myIncome = parseInt(modifiedIncome.join(''));
+      $('#income-graph-description').empty().html('This graph shows the average incomes (in US dollars) in '+homecity+' and '+awaycity+', as well as the national median income.');
+    }
+    else {
+      $('#income-graph-description').append('<br><br>You did not enter any income incoformation.');
+    }
     var homeincome = localStorage.getItem('homeincome');
     var awayincome = localStorage.getItem('awayincome');
     var ctx = $('#chart2_canvas');

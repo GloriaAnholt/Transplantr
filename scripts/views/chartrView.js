@@ -1,12 +1,17 @@
 'use strict';
 
 function drawChart() {
+  //careful with setTimeout. If you're using this for an animation like a fade in or something it's
+  //fine but if you're using it to set up async you're setting yourself up for trouble in the long term.
+  //The trouble isn't so much in using it once but later when you're trying to compensate for other async
+  //calls
   setTimeout(function() {
     var homecity = localStorage.getItem('homecity');
     var awaycity = localStorage.getItem('awaycity');
     var homehome = localStorage.getItem('homehomePrice');
     var awayhome = localStorage.getItem('awayhomePrice');
     var ctx = $('#chart_canvas');
+    //break strings this big down to multiple lines
     $('#housing-graph-description').empty().html('This graph shows the average home prices(in US dollars) in '+homecity+' and '+awaycity+', as well as the national average home price.');
     if (homehome.charAt(0) !== '$'){
       $('#housing-graph-description').append('<br><br>Zillow does not have any house price information for ', homecity,'.');

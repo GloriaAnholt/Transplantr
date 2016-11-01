@@ -62,6 +62,7 @@ To use handlebars, the data needs to be stored as an array of objects.
         }
 
         if (isCurrent) {
+          //map should already return a new array so assigning this to an empty array first is redundant
           MortgageData.currentCityNames = [];
           MortgageData.currentCityNames = MortgageData.currentCities.map(function(city){
             return city.innerHTML;
@@ -132,6 +133,13 @@ To use handlebars, the data needs to be stored as an array of objects.
     if (isCurrent) {
       var x = MortgageData.currentCityNames.indexOf(cityChoice) + 1;
     } else {
+      //since you're declaring the variable inside the if block here it won't be declared for the
+      //assignment here in the else. This would actually fail in strict mode. The reason that this
+      //is particularly problematic here is that when you don't declare a variable before you assign
+      //it (aside from crashing your program in strict mode) it will silently declare a variable for
+      //you, but on the global scope. With a variable simply named "x" this could cause some problems
+      //the easiest way to handle this here would just be to declare it at the top of the function
+      //block and assign it in the conditional.
       x = MortgageData.destinationCityNames.indexOf(cityChoice) + 1;
     }
 
@@ -139,6 +147,7 @@ To use handlebars, the data needs to be stored as an array of objects.
     if (isNaN(citiesNodes.childNodes[x].childNodes[2].innerHTML)) {
       var houseprice = 'not available for ' + cityChoice + '.';
     } else {
+      //see above comment.
       houseprice = '$' + citiesNodes.childNodes[x].childNodes[2].innerHTML;
     }
 
@@ -155,6 +164,7 @@ To use handlebars, the data needs to be stored as an array of objects.
     }
 
     if (isCurrent) {  // state, county, city, homePrice, income, poverty
+      //break declarations like this down to multiple lines
       Data.home = new Data.location({'state': Census.stateChoiceName, 'county': Census.countyChoiceName, 'city': MortgageData.currentCityChoice, 'homePrice': houseprice, 'income': Data.econIncome, 'poverty': Data.econPoverty});
       Data.storeData(Data.home, isCurrent);
     } else {

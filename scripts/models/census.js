@@ -219,7 +219,9 @@
       dest1BedMedian = Census.stripNumbers(localStorage.getItem('away1bedMedian')),
       cur2BedMedian = Census.stripNumbers(localStorage.getItem('home2bedMedian')),
       dest2BedMedian = Census.stripNumbers(localStorage.getItem('away2bedMedian'));
-
+    //both having one var keyword per line and having comma seperated assignments are
+    //valid ways to handle variable assignment but as with any stylistic decision you
+    //should choose one for the project and stick to it.
 
     //get ration of income to local median income & local home price
     var curIncRatio = myIncome/localMedianIncome;
